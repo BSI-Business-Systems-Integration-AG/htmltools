@@ -1,2 +1,0 @@
-# htmltools
-htmltools-maven-plugin

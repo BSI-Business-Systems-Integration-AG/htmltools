@@ -1,0 +1,44 @@
+:issues: https://github.com/jmini/htmltools/issues
+:license: http://www.eclipse.org/legal/epl-v10.html
+:adoc_issue_858: https://github.com/asciidoctor/asciidoctor/issues/858
+
+= htmltools-maven-plugin
+
+Maven plugin to work around some of the Asciidoctor limitations, this maven plugin post-process the files in order to publish them.
+
+== Description
+
+* Ressource delivery (like images and css): they are moved in subfolders and their path in the HTML file is modified.
+** images are moved in a `images/` subfolder.
+** css are moved in a `css/` subfolder.
+* CSS replacement: it is possible to replace some CSS file with other ones.
+* Link to listing and images are replaced (work around for link:{adoc_issue_858}[#858]). Your need these configurations in your asciidoc files:
+** `:figure-caption: Figure` (this is already the default).
+** `:listing-caption: Listing`.
+* Navigation link: Multiple HTML pages are connected together with "Previous", "Next", "Home" links.
+* PDF File are copied to the correct location.
+* The HTML output can be zipped.
+
+== Code
+
+As for any maven plugin, the source code of the plugin is available in the link:src/[src] folder.
+
+With Eclipse IDE, here is how you can import this project:
+
+* Clone or add this repository using the "Git Repositories" view.
+* Start the "Import Projects..." wizard on the "Working Directory" folder and pick the option "Import as general project".
+* Back in the Package Explorer view, select "Configure" > "Convert to Maven Project" on the project.
+
+=== Build
+
+Run maven install on the root pom file:
+
+  mvn install
+
+== Get in touch
+
+Use the link:{issues}[htmltools issue tracker] on GitHub.
+
+== License
+
+link:{license}[Eclipse Public License - v 1.0]
