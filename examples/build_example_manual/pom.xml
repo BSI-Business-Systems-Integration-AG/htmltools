@@ -1,0 +1,40 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.bsiag.htmltools</groupId>
+  <artifactId>build_example_manual</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.bsiag.htmltools</groupId>
+        <artifactId>htmltools-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>htmltools</goal>
+            </goals>
+            <configuration>
+              <outputFolder>${project.build.directory}/www</outputFolder>
+              <inputSources>
+                <!-- publish for eclipse.org/scout -->
+                <inputSource>
+                  <inputFolder>generated-docs</inputFolder>
+                  <htmlOutput>
+                    <outputSubFolder>example-manual</outputSubFolder>
+                    <outputZipFileName>example-manual.zip</outputZipFileName>
+                  </htmlOutput>
+                  <pdfOutput/>
+                </inputSource>
+              </inputSources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

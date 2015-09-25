@@ -1,0 +1,45 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.bsiag.htmltools</groupId>
+  <artifactId>replace_css</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.bsiag.htmltools</groupId>
+        <artifactId>htmltools-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>htmltools</goal>
+            </goals>
+            <configuration>
+              <inputSources>
+                <inputSource>
+                  <inputFolder>src/html</inputFolder>
+                  <htmlOutput>
+                    <cssReplacements>
+                      <cssReplacement>
+                        <originalFileName>body-bad.css</originalFileName>
+                        <replacementFile>src/new_css/body_new.css</replacementFile>
+                      </cssReplacement>
+                      <cssReplacement>
+                        <originalFileName>p-bad.css</originalFileName>
+                        <replacementFile>src/new_css/p_new.css</replacementFile>
+                      </cssReplacement>
+                    </cssReplacements>
+                  </htmlOutput>
+                </inputSource>
+              </inputSources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

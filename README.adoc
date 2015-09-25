@@ -19,6 +19,10 @@ Maven plugin to work around some of the Asciidoctor limitations, this maven plug
 * PDF File are copied to the correct location.
 * The HTML output can be zipped.
 
+== Usage
+
+Check out the link:examples/[examples].
+
 == Code
 
 As for any maven plugin, the source code of the plugin is available in the link:src/[src] folder.
