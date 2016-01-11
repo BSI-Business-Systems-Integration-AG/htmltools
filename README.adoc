@@ -1,6 +1,9 @@
 :issues: https://github.com/jmini/htmltools/issues
 :license: http://www.eclipse.org/legal/epl-v10.html
+:oomph_setup: https://raw.githubusercontent.com/jmini/htmltools/master/Htmltools.setup
+:bintray_repo: https://bintray.com/jmini/maven
 :adoc_issue_858: https://github.com/asciidoctor/asciidoctor/issues/858
+
 
 = htmltools-maven-plugin
 
@@ -23,11 +26,33 @@ Maven plugin to work around some of the Asciidoctor limitations, this maven plug
 
 Check out the link:examples/[examples].
 
+=== Download
+
+The maven plugin is available in link:{bintray_repo}[my maven repository on Bintray], you can use this in your POM:
+
+[source,xml]
+----
+<pluginRepositories>
+  <pluginRepository>
+    <id>bintray.jmini.maven</id>
+    <url>http://dl.bintray.com/jmini/maven/</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+  </pluginRepository>
+</pluginRepositories>
+----
+
 == Code
 
 As for any maven plugin, the source code of the plugin is available in the link:src/[src] folder.
 
-With Eclipse IDE, here is how you can import this project:
+There is an Eclipse Oomph Setup Task to import this project: link:{oomph_setup}[Htmltools.setup]
+
+If you prefer to import the project manually, here is how you can do it:
 
 * Clone or add this repository using the "Git Repositories" view.
 * Start the "Import Projects..." wizard on the "Working Directory" folder and pick the option "Import as general project".
