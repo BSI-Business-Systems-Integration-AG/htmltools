@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2015 BSI Business Systems Integration AG.
+ * Copyright (c) 2015 Jeremie Bresson.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Distribution License v1.0
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/org/documents/edl-v10.html
+ * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     BSI Business Systems Integration AG - initial API and implementation
+ *     Jeremie Bresson - initial API and implementation
  ******************************************************************************/
-package com.bsiag.geneclipsetoc.internal;
+package com.bsiag.htmltools.internal;
 
 import java.io.File;
 import java.io.FileOutputStream;

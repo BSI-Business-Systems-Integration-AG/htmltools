@@ -8,7 +8,7 @@
  * Contributors:
  *     Jeremie Bresson - initial API and implementation
  ******************************************************************************/
-package com.bsiag.geneclipsetoc.maven;
+package com.bsiag.htmltools.maven;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +23,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.bsiag.geneclipsetoc.internal.PublishUtility;
-import com.bsiag.geneclipsetoc.internal.ZipUtility;
+import com.bsiag.htmltools.internal.PublishUtility;
+import com.bsiag.htmltools.internal.ZipUtility;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
