@@ -40,7 +40,13 @@ public class PublishUtility {
   private static final String IMAGE_NEXT = "next.gif";
   private static final String IMAGE_PREV = "prev.gif";
 
-  public static void publishHtmlFiles(File inFolder, List<File> inFiles, File outFolder, Map<String, File> cssReplacement) throws IOException {
+  public static void publishHtmlFiles(ParamPublishHtmlFiles param) throws IOException {
+    final File inFolder = param.getInFolder();
+    final List<File> inFiles = param.getInFiles();
+    final File outFolder = param.getOutFolder();
+    final Map<String, File> cssReplacement = param.getCssReplacement();
+    final boolean fixXrefLinks = param.isFixXrefLinks();
+
     if (!inFolder.exists() || !inFolder.isDirectory()) {
       throw new IllegalStateException("Folder inFolder '" + inFolder.getAbsolutePath() + "' not found.");
     }
@@ -71,7 +77,7 @@ public class PublishUtility {
     }
 
     for (File file : files) {
-      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root);
+      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root, fixXrefLinks);
     }
   }
 
@@ -86,9 +92,12 @@ public class PublishUtility {
    * @param cssReplacement
    * @param pageList
    * @param root
+   * @param fixXrefLinks
+   *          tells if the cross references links should be fixed as described here
+   *          https://github.com/asciidoctor/asciidoctor/issues/858
    * @throws IOException
    */
-  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root) throws IOException {
+  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root, boolean fixXrefLinks) throws IOException {
     File outFile = new File(outFolder, inFile.getName());
     String html = Files.toString(inFile, Charsets.UTF_8);
 
@@ -97,8 +106,11 @@ public class PublishUtility {
 
     fixNavigation(doc, inFile, pageList, root);
 
-    fixListingLink(doc);
-    fixFigureLink(doc);
+    if (fixXrefLinks) {
+      fixListingLink(doc);
+      fixFigureLink(doc);
+      fixTableLink(doc);
+    }
 
     Files.createParentDirs(outFile);
     moveAndCopyImages(doc, inFolder, outFolder, IMAGES_SUB_PATH);
@@ -258,17 +270,7 @@ public class PublishUtility {
    *          JSoup document (type is {@link org.jsoup.nodes.Document})
    */
   public static void fixListingLink(Document doc) {
-    Elements elements = doc.getElementsByTag("a");
-    for (Element link : elements) {
-      String href = link.attr("href");
-      if (href != null && href.startsWith("#")) {
-        String id = href.substring(1);
-        Element idElement = doc.getElementById(id);
-        if (idElement != null && "listingblock".equals(idElement.attr("class"))) {
-          fixLink(link, idElement, listingPattern);
-        }
-      }
-    }
+    fixBlockLink(doc, "listingblock", listingPattern);
   }
 
   static private Pattern figurePattern = Pattern.compile("(Figure [0-9]+)\\.");
@@ -297,7 +299,7 @@ public class PublishUtility {
           boolean checkNext = false;
           for (int i = 0; i < container.childNodeSize(); i++) {
             Node childNode = container.childNode(i);
-            if (id.equals(childNode.attr("id")) && "imageblock".equals(childNode.attr("class"))) {
+            if (id.equals(childNode.attr("id")) && classAttributeContains(childNode, "imageblock")) {
               checkNext = true;
             }
             if (!fixedText && checkNext) {
@@ -318,10 +320,42 @@ public class PublishUtility {
     }
   }
 
+  static private Pattern tablePattern = Pattern.compile("(Table [0-9]+)\\.");
+
+  /**
+   * #858 workaround for table
+   * https://github.com/asciidoctor/asciidoctor/issues/858
+   *
+   * @param doc
+   *          JSoup document (type is {@link org.jsoup.nodes.Document})
+   */
+  public static void fixTableLink(Document doc) {
+    fixBlockLink(doc, "tableblock", tablePattern);
+  }
+
+  private static void fixBlockLink(Document doc, String classAttrValue, Pattern pattern) {
+    Elements elements = doc.getElementsByTag("a");
+    for (Element link : elements) {
+      String href = link.attr("href");
+      if (href != null && href.startsWith("#")) {
+        String id = href.substring(1);
+        Element idElement = doc.getElementById(id);
+        if (idElement != null && classAttributeContains(idElement, classAttrValue)) {
+          fixLink(link, idElement, pattern);
+        }
+      }
+    }
+  }
+
+  private static boolean classAttributeContains(Node element, String value) {
+    String classAttr = element.attr("class");
+    return classAttr != null && classAttr.contains(value);
+  }
+
   private static boolean fixLink(Element link, Element element, Pattern pattern) {
-    Element titleDiv = findTitleDiv(element);
-    if (titleDiv != null) {
-      Matcher matcher = pattern.matcher(titleDiv.text());
+    Element titleTag = findTitleTag(element);
+    if (titleTag != null) {
+      Matcher matcher = pattern.matcher(titleTag.text());
       if (matcher.find()) {
         link.text(matcher.group(1));
         return true;
@@ -330,8 +364,15 @@ public class PublishUtility {
     return false;
   }
 
-  private static Element findTitleDiv(Element element) {
-    Elements elements = element.getElementsByTag("div");
+  private static Element findTitleTag(Element element) {
+    Elements elements;
+    elements = element.getElementsByTag("div");
+    for (Element e : elements) {
+      if ("title".equals(e.attr("class"))) {
+        return e;
+      }
+    }
+    elements = element.getElementsByTag("caption");
     for (Element e : elements) {
       if ("title".equals(e.attr("class"))) {
         return e;

@@ -23,6 +23,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.bsiag.htmltools.internal.ParamPublishHtmlFiles;
 import com.bsiag.htmltools.internal.PublishUtility;
 import com.bsiag.htmltools.internal.ZipUtility;
 import com.google.common.base.Charsets;
@@ -34,10 +35,6 @@ public class HtmltoolsMojo<V> extends AbstractMojo {
   private static final String INPUT_SOURCES = "inputSources";
   private static final String OUTPUT_FOLDER = "outputFolder";
 
-  /**
-   * Ordered list of HTLM pages.
-   * If set, {@link #pagesListFile} can not be set.
-   */
   @Parameter(property = INPUT_SOURCES)
   protected List<InputSource> inputSources;
 
@@ -101,15 +98,6 @@ public class HtmltoolsMojo<V> extends AbstractMojo {
       }
     }
 
-//    getLog().info("outputFolder: " + outputFolder);
-//    for (int i = 0; i < inputSources.size(); i++) {
-//      InputSource inputSource = inputSources.get(i);
-//      getLog().info("inputSource " + (i + 1));
-//      getLog().info("  - OutputSubFolder: " + inputSource.getOutputSubFolder());
-//      getLog().info("  - InputFolder: " + inputSource.getInputFolder());
-//      getLog().info("  - InputFolder (exists): " + inputSource.getInputFolder().exists());
-//    }
-
     for (InputSource inputSource : inputSources) {
       File inputSourceOutputFolder = computeSubFolder(outputFolder, inputSource.getOutputSubFolder());
 
@@ -126,7 +114,13 @@ public class HtmltoolsMojo<V> extends AbstractMojo {
         }
 
         try {
-          PublishUtility.publishHtmlFiles(inputSource.getInputFolder(), pageListMap.get(htmlOutput), htmlOutputFolder, cssReplacementMap);
+          ParamPublishHtmlFiles param = new ParamPublishHtmlFiles();
+          param.setInFolder(inputSource.getInputFolder());
+          param.setInFiles(pageListMap.get(htmlOutput));
+          param.setOutFolder(htmlOutputFolder);
+          param.setCssReplacement(cssReplacementMap);
+          param.setFixXrefLinks(inputSource.getFixXrefLinks() == null ? true : inputSource.getFixXrefLinks().booleanValue());
+          PublishUtility.publishHtmlFiles(param);
           getLog().info("HTML InputSource <" + inputSource.getInputFolder().getAbsolutePath() + "> to " + htmlOutputFolder.getAbsolutePath());
 
           String outputZipFileName = htmlOutput.getOutputZipFileName();

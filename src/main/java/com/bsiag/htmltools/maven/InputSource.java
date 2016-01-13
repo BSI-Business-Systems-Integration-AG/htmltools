@@ -24,6 +24,7 @@ public class InputSource {
   static final String OUTPUT_SUB_FOLDER = "outputSubFolder";
   static final String PDF_OUTPUT = "pdfOutput";
   static final String HTML_OUTPUT = "htmlOutput";
+  static final String FIX_XREF_LINKS = "fixXrefLinks";
 
   @Parameter(property = INPUT_FOLDER, required = true)
   private File inputFolder;
@@ -39,6 +40,9 @@ public class InputSource {
 
   @Parameter(property = HTML_OUTPUT)
   private HtmlOutput htmlOutput;
+
+  @Parameter(property = FIX_XREF_LINKS, defaultValue = "true")
+  private Boolean fixXrefLinks;
 
   public File getInputFolder() {
     return inputFolder;
@@ -58,5 +62,9 @@ public class InputSource {
 
   public HtmlOutput getHtmlOutput() {
     return htmlOutput;
+  }
+
+  public Boolean getFixXrefLinks() {
+    return fixXrefLinks;
   }
 }

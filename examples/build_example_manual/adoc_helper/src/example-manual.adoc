@@ -1,0 +1,141 @@
+= Example Manual
+Doc Writer <doc.writer@example.org>
+2014-09-09
+:revnumber: {project-version}
+:example-caption!:
+:listing-caption: Listing
+ifndef::imagesdir[:imagesdir: ../../]
+
+This is a user manual for an example project.
+
+== Introduction
+
+This project does something.
+We just haven't decided what that is yet.
+
+* For StringUtils: <<lst-stringutils>>
+* Code example:
+** For Java see <<lst-java>>
+** For Groovy see <<lst-groovy>>
+** For Ruby see <<lst-ruby>>
+* Link to the image: <<fig-sunset>>
+* The <<tbl-results>> shows something important
+
+This page was built by the following command:
+
+ $ mvn
+
+== Source Code
+
+[[lst-stringutils, StringUtils Listing]]
+[source,java]
+.Java code from project
+----
+public boolean contains(String haystack, String needle) {
+    return haystack.contains(needle);
+}
+----
+
+== Images
+
+[[fig-sunset, Sunset Figure]]
+.Sunset image
+image::../shared_img/sunset.jpg[scaledwidth=75%]
+
+== Code
+
+=== Ruby example
+
+[[lst-ruby, Ruby Example Listing]]
+[source,ruby]
+.Inline Ruby code
+----
+=begin
+This program will
+print "Hello world".
+=end
+
+puts 'Hello world'
+----
+
+=== Java example
+
+[[lst-java, Java Example Listing]]
+[source,java]
+.Inline Java code
+----
+/**
+ * This is a Java "Hello world" example.
+ * @param args arguments
+ *
+ * @since 1.3
+ */
+public class Test {
+  public static void main(String[] args) {
+    System.out.println("Hello World!"); <1>
+  }
+}
+----
+<1> This is where the fun happens
+
+=== Groovy example
+
+[[lst-groovy, Groovy Example Listing]]
+[source,groovy]
+.Included Groovy code (from code_snippets/groovy.groovy)
+----
+def printHello (toWho = "World") {
+    println "Hello $toWho!!"
+}
+
+// Passing some value
+printHello('Asciidoctor')
+
+// Using default value
+printHello()
+----
+
+=== Scala example
+
+[[lst-scala, Groovy Example Listing]]
+[source,scala]
+.Inline Scala code
+----
+/**
+ * This is a simple scala example
+ */
+object HelloWorld {
+  def main(args: Array[String]) {
+    println("Hello, world!")
+  }
+}
+----
+
+== Table example
+
+[[tbl-results, Results Table]]
+.Results
+[options="header"]
+|====
+| Users | Errors | Tests
+| 8 | 0 | 1639
+|==== 
+
+[appendix]
+== Something else
+
+This is a test.
+
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
+* li
