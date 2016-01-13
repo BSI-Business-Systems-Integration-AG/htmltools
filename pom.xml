@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bsiag.htmltools</groupId>
   <artifactId>htmltools-maven-plugin</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <properties>
     <guava.version>15.0</guava.version>
@@ -74,7 +74,7 @@
     <connection>scm:git:https://github.com/jmini/htmltools.git</connection>
     <developerConnection>scm:git:git@github.com:jmini/htmltools.git</developerConnection>
     <url>https://github.com/jmini/htmltools</url>
-    <tag>v1.0.1</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <repository>
