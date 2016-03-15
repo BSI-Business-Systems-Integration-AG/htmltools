@@ -423,7 +423,7 @@ public class PublishUtility {
    * @return title or null if not found
    * @throws IOException
    */
-  private static String readAndFindFirstHeader(File file) throws IOException {
+  public static String readAndFindFirstHeader(File file) throws IOException {
     String html = Files.toString(file, Charsets.ISO_8859_1);
     Document doc = Jsoup.parse(html);
     return findFirstHeader(doc);
