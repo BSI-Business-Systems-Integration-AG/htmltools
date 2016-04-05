@@ -30,7 +30,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 @Mojo(name = "htmltools")
-public class HtmltoolsMojo<V> extends AbstractMojo {
+public class HtmltoolsMojo extends AbstractMojo {
 
   private static final String INPUT_SOURCES = "inputSources";
   private static final String OUTPUT_FOLDER = "outputFolder";

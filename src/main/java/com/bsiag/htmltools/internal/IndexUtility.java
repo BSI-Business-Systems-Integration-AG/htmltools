@@ -45,10 +45,16 @@ public final class IndexUtility {
 
   public static final List<DocEntry> computeEntries(File folder) throws IOException {
     List<DocEntry> result = new ArrayList<>();
-    File[] files = folder.listFiles(DIRECTORY_FILEFILTER);
-    if (files != null) {
-      for (File file : files) {
-        result.add(computeEntry(file));
+    File[] folders = folder.listFiles(DIRECTORY_FILEFILTER);
+    if (folders != null) {
+      for (File f : folders) {
+        DocEntry entry = computeEntry(f);
+        if (entry.getHtmlSubPath() != null || entry.getPdfSubPath() != null || entry.getZipSubPath() != null) {
+          result.add(entry);
+        }
+        else {
+          result.addAll(computeEntries(f));
+        }
       }
     }
     return result;

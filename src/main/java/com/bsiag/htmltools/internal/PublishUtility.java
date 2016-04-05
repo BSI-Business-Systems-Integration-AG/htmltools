@@ -541,4 +541,119 @@ public class PublishUtility {
       System.err.println("Unexpected content type: " + content);
     }
   }
+
+  public static void diffAndCopy(File inputRootFolder, List<DocEntry> inputList, File outputRootFolder, List<DocEntry> outputList) throws IOException {
+    for (DocEntry input : inputList) {
+      DocEntry output = findByHtmlSubPath(outputList, input.getHtmlSubPath());
+      if (output == null) {
+        //output doesn't exist => copy.
+        File outputFolder = new File(outputRootFolder, input.getFolder().getAbsolutePath().substring(inputRootFolder.getAbsolutePath().length()));
+        copyDocEntry(input, outputFolder);
+      }
+      else {
+        //TODO diff and copy
+      }
+    }
+    for (DocEntry output : outputList) {
+      DocEntry input = findByHtmlSubPath(inputList, output.getHtmlSubPath());
+      if (input == null) {
+        //remove the output
+        deleteFilesRec(output.getFolder());
+      }
+    }
+  }
+
+  private static DocEntry findByHtmlSubPath(List<DocEntry> list, String htmlSubPath) {
+    for (DocEntry e : list) {
+      if (htmlSubPath.equals(e.getHtmlSubPath())) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  private static void copyDocEntry(DocEntry input, File outputFile) throws IOException {
+    File pdfFrom = new File(input.getFolder(), input.getPdfSubPath());
+    File pdfTo = new File(outputFile, input.getPdfSubPath());
+    Files.createParentDirs(pdfTo);
+    Files.copy(pdfFrom, pdfTo);
+
+    File zipFrom = new File(input.getFolder(), input.getZipSubPath());
+    File zipTo = new File(outputFile, input.getZipSubPath());
+    Files.createParentDirs(zipTo);
+    Files.copy(zipFrom, zipTo);
+
+    File htmlFolderFrom = new File(input.getFolder(), input.getHtmlSubPath()).getParentFile();
+    File htmlFolderTo = new File(outputFile, input.getHtmlSubPath()).getParentFile();
+    Files.createParentDirs(htmlFolderTo);
+    copyRec(htmlFolderFrom, htmlFolderTo);
+  }
+
+  private static void copyRec(File sourceLocation, File targetLocation) throws IOException {
+    if (sourceLocation.isDirectory()) {
+      if (!targetLocation.exists()) {
+        targetLocation.mkdir();
+      }
+
+      List<String> sourceChildren = Arrays.asList(sourceLocation.list());
+      for (String child : sourceChildren) {
+        copyRec(new File(sourceLocation, child), new File(targetLocation, child));
+      }
+      for (String child : targetLocation.list()) {
+        if (!sourceChildren.contains(child)) {
+          File file = new File(targetLocation, child);
+          if (!file.isDirectory()) {
+            file.delete();
+          }
+        }
+      }
+    }
+    else {
+      Files.copy(sourceLocation, targetLocation);
+    }
+  }
+
+  private static void deleteFilesRec(File targetLocation) throws IOException {
+    if (targetLocation.exists()) {
+      for (File file : targetLocation.listFiles()) {
+        if (file.isDirectory()) {
+          deleteFilesRec(file);
+        }
+        else {
+          file.delete();
+        }
+      }
+    }
+  }
+
+  public static boolean hasModifications(File file1, File file2) throws IOException {
+    List<String> lines1 = Files.readLines(file1, Charsets.UTF_8);
+    List<String> lines2 = Files.readLines(file2, Charsets.UTF_8);
+
+    return hasModifications(lines1, lines2);
+  }
+
+  public static boolean hasModifications(List<String> lines1, List<String> lines2) {
+    if (lines1.size() != lines2.size()) {
+      return true;
+    }
+    for (int i = 0; i < lines1.size(); i++) {
+      String l1 = lines1.get(i);
+      String l2 = lines2.get(i);
+      if (hasModifications(l1, l2)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  static boolean hasModifications(String line1, String line2) {
+    String trim1 = line1.trim();
+    String trim2 = line2.trim();
+    if (trim1.matches("<br /> Last updated .+") && trim2.matches("<br /> Last updated .+")) {
+      return true;
+    }
+    return !line1.equals(line2);
+  }
 }
