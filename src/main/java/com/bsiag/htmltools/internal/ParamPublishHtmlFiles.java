@@ -21,6 +21,7 @@ public class ParamPublishHtmlFiles {
   private File outFolder;
   private Map<String, File> cssReplacement;
   private boolean fixXrefLinks;
+  private boolean fixExternalLinks;
 
   public File getInFolder() {
     return inFolder;
@@ -60,5 +61,13 @@ public class ParamPublishHtmlFiles {
 
   public void setFixXrefLinks(boolean fixXrefLinks) {
     this.fixXrefLinks = fixXrefLinks;
+  }
+
+  public boolean isFixExternalLinks() {
+    return fixExternalLinks;
+  }
+
+  public void setFixExternalLinks(boolean fixExternalLinks) {
+    this.fixExternalLinks = fixExternalLinks;
   }
 }

@@ -20,6 +20,9 @@ We just haven't decided what that is yet.
 ** For Ruby see <<lst-ruby>>
 * Link to the image: <<fig-sunset>>
 * The <<tbl-results>> shows something important
+* External links:
+** http://asciidoctor.org/
+** link:https://www.eclipse.org/[Eclipse.org]
 
 This page was built by the following command:
 

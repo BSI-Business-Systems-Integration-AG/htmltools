@@ -120,6 +120,7 @@ public class HtmltoolsMojo<V> extends AbstractMojo {
           param.setOutFolder(htmlOutputFolder);
           param.setCssReplacement(cssReplacementMap);
           param.setFixXrefLinks(inputSource.getFixXrefLinks() == null ? true : inputSource.getFixXrefLinks().booleanValue());
+          param.setFixExternalLinks(inputSource.getFixExternalLinks() == null ? true : inputSource.getFixExternalLinks().booleanValue());
           PublishUtility.publishHtmlFiles(param);
           getLog().info("HTML InputSource <" + inputSource.getInputFolder().getAbsolutePath() + "> to " + htmlOutputFolder.getAbsolutePath());
 

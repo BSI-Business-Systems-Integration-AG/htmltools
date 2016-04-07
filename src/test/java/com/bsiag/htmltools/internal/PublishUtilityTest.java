@@ -67,6 +67,19 @@ public class PublishUtilityTest {
     assertEquals(expected, result);
   }
 
+  @Test
+  public void testIsExternalLink() throws Exception {
+    assertEquals(true, PublishUtility.isExternalLink("http://eclipse.org/index.html"));
+    assertEquals(true, PublishUtility.isExternalLink("http://eclipse.org/#test"));
+    assertEquals(true, PublishUtility.isExternalLink("https://git.eclipse.org/"));
+    assertEquals(true, PublishUtility.isExternalLink("ftp://me@site.com"));
+
+    assertEquals(false, PublishUtility.isExternalLink("other-page.html"));
+    assertEquals(false, PublishUtility.isExternalLink("../index.html"));
+    assertEquals(false, PublishUtility.isExternalLink("folder/page.html"));
+
+  }
+
   private static String readFile(String file) throws URISyntaxException, UnsupportedEncodingException, IOException {
     URL url = PublishUtilityTest.class.getResource(file);
     Path resPath = Paths.get(url.toURI());

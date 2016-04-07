@@ -45,7 +45,6 @@ public class PublishUtility {
     final List<File> inFiles = param.getInFiles();
     final File outFolder = param.getOutFolder();
     final Map<String, File> cssReplacement = param.getCssReplacement();
-    final boolean fixXrefLinks = param.isFixXrefLinks();
 
     if (!inFolder.exists() || !inFolder.isDirectory()) {
       throw new IllegalStateException("Folder inFolder '" + inFolder.getAbsolutePath() + "' not found.");
@@ -77,7 +76,7 @@ public class PublishUtility {
     }
 
     for (File file : files) {
-      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root, fixXrefLinks);
+      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root, param.isFixXrefLinks(), param.isFixExternalLinks());
     }
   }
 
@@ -95,9 +94,11 @@ public class PublishUtility {
    * @param fixXrefLinks
    *          tells if the cross references links should be fixed as described here
    *          https://github.com/asciidoctor/asciidoctor/issues/858
+   * @param fixExternalLinks
+   *          tells if external files should have a 'target="_blank"' attribute
    * @throws IOException
    */
-  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root, boolean fixXrefLinks) throws IOException {
+  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root, boolean fixXrefLinks, boolean fixExternalLinks) throws IOException {
     File outFile = new File(outFolder, inFile.getName());
     String html = Files.toString(inFile, Charsets.UTF_8);
 
@@ -110,6 +111,9 @@ public class PublishUtility {
       fixListingLink(doc);
       fixFigureLink(doc);
       fixTableLink(doc);
+    }
+    if (fixExternalLinks) {
+      fixExternalLinks(doc);
     }
 
     Files.createParentDirs(outFile);
@@ -345,6 +349,26 @@ public class PublishUtility {
         }
       }
     }
+  }
+
+  /**
+   * Add 'target="_blank" for external links'
+   *
+   * @param doc
+   *          JSoup document (type is {@link org.jsoup.nodes.Document})
+   */
+  public static void fixExternalLinks(Document doc) {
+    Elements elements = doc.getElementsByTag("a");
+    for (Element link : elements) {
+      String href = link.attr("href");
+      if (isExternalLink(href)) {
+        link.attr("target", "_blank");
+      }
+    }
+  }
+
+  static boolean isExternalLink(String href) {
+    return href != null && !href.isEmpty() && href.matches("([a-zA-Z]+\\://|//).+");
   }
 
   private static boolean classAttributeContains(Node element, String value) {
