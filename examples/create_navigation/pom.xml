@@ -1,7 +1,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
  
-  <groupId>com.bsiag.htmltools</groupId>
+  <groupId>com.bsiag.htmltools-examples</groupId>
   <artifactId>create_navigation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -24,7 +24,7 @@
       <plugin>
         <groupId>com.bsiag.htmltools</groupId>
         <artifactId>htmltools-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
