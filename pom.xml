@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bsiag.htmltools</groupId>
   <artifactId>htmltools-maven-plugin</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <!-- tag::pluginRepositories[] -->
@@ -125,6 +125,7 @@
             <revdate>${build.date}</revdate>
             <sourcedir>${project.build.sourceDirectory}</sourcedir>
             <project-version>${project.version}</project-version>
+            <toc>left</toc>
             <icons>font</icons>
             <sectanchors>true</sectanchors>
             <idprefix />
@@ -134,7 +135,7 @@
         <executions>
           <execution>
             <id>generate-adoc</id>
-            <phase>verify</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>process-asciidoc</goal>
             </goals>

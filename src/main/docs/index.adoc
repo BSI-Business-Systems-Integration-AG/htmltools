@@ -3,6 +3,7 @@
 :example-nav-pom: ../../../examples/create_navigation/pom.xml
 :example-css-pom: ../../../examples/replace_css/pom.xml
 :example-man-pom: ../../../examples/build_example_manual/pom.xml
+:example-cpy-pom: ../../../examples/copy/pom.xml
 
 include::{github-readme}[tags=vardef]
 
@@ -23,17 +24,6 @@ include::{github-readme}[tags=description]
 
 Here is a detailed description of what you can do:
 
-* Ressource delivery (like images and css): they are moved in subfolders and their path in the HTML file is modified.
-** images are moved in a `images/` subfolder.
-** css are moved in a `css/` subfolder.
-* CSS replacement: it is possible to replace some CSS file with other ones.
-* Link to listing and images are replaced (work around for link:{adoc_issue_858}[#858]). Your need these configurations in your asciidoc files:
-** `:figure-caption: Figure` (this is already the default).
-** `:listing-caption: Listing`.
-* Navigation link: Multiple HTML pages are connected together with "Previous", "Next", "Home" links.
-* PDF File are copied to the correct location.
-* The HTML output can be zipped.
-
 == Usage
 
 The maven plugin is available in link:{bintray_repo}[my maven repository on Bintray], you can use this in your POM:
@@ -43,7 +33,23 @@ The maven plugin is available in link:{bintray_repo}[my maven repository on Bint
 include::{main-pom}[tags="pluginRepositories",indent="0"]
 ----
 
-=== Example 1: Create navigation
+=== Goal 'htmltools'
+
+Here is a list of what you can do with this goal.
+
+* Ressource delivery (like images and css): they are moved in subfolders and their path in the HTML file is modified.
+** images are moved in a `images/` subfolder.
+** css are moved in a `css/` subfolder.
+* CSS replacement: it is possible to replace some CSS file with other ones.
+* Link to listing, images, table are replaced (work around for link:{adoc_issue_858}[#858]). Your need these configurations in your asciidoc files:
+** `:figure-caption: Figure` (this is already the default).
+** `:listing-caption: Listing`.
+** `:table-caption: Table`.
+* Navigation link: Multiple HTML pages are connected together with "Previous", "Next", "Home" links.
+* PDF File are copied to the correct location.
+* The HTML output can be zipped.
+
+==== Example 1: Create navigation
 
 This example adds some navigation bar in the html files, given a list of pages.
 
@@ -54,7 +60,7 @@ include::{example-nav-pom}[tags="main",indent="0"]
 
 Complete example: gh:viewdir[path='examples/create_navigation/', link-text='create_navigation'].
 
-=== Example 2: Replace CSS
+==== Example 2: Replace CSS
 
 This example replaces the CSS files definition in the HTML.
 
@@ -65,7 +71,7 @@ include::{example-css-pom}[tags="main",indent="0"]
 
 Complete example: gh:viewdir[path='examples/replace_css/', link-text='replace_css'].
 
-=== Example 3: Example Manual
+==== Example 3: Example Manual
 
 Given an Asciidoctor output, this example prepare the doc for publication.
 
@@ -76,6 +82,19 @@ include::{example-man-pom}[tags="main",indent="0"]
 
 Complete example: gh:viewdir[path='examples/build_example_manual/', link-text='build_example_manual'].
 
+=== Goal 'copydocs'
+
+This goal can be used to copy `html` files and the related `zip` and `pdf` files.
+The copy operation is only triggered if there are differences in the content.
+
+==== Example 1: copy files
+
+[source,xml]
+----
+include::{example-cpy-pom}[tags="main",indent="0"]
+----
+
+Complete example: gh:viewdir[path='examples/copy/', link-text='copy'].
 
 == Code
 
