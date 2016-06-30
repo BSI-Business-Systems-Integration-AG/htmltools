@@ -21,6 +21,7 @@
 
   <build>
     <plugins>
+      <!-- tag::main[] -->
       <plugin>
         <groupId>com.bsiag.htmltools</groupId>
         <artifactId>htmltools-maven-plugin</artifactId>
@@ -49,6 +50,7 @@
           </execution>
         </executions>
       </plugin>
+      <!-- end::main[] -->
     </plugins>
   </build>
 </project>

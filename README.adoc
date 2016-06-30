@@ -1,73 +1,46 @@
-:issues: https://github.com/jmini/htmltools/issues
+//tag::vardef[]
+:gh-repo-owner: jmini
+:gh-repo-name: htmltools
+:project-name: htmltools-maven-plugin
+:branch: master
+:twitter-handle: j2r2b
 :license: http://www.eclipse.org/legal/epl-v10.html
-:oomph_setup: https://raw.githubusercontent.com/jmini/htmltools/master/Htmltools.setup
+:license-name: Eclipse Public License - v 1.0
+:oomph-file: Htmltools.setup
 :bintray_repo: https://bintray.com/jmini/maven
+:bintraypage: {bintray_repo}/htmltools
 :adoc_issue_858: https://github.com/asciidoctor/asciidoctor/issues/858
 
+:repository: {gh-repo-owner}/{gh-repo-name}
+:homepage: https://{gh-repo-owner}.github.io/{gh-repo-name}
+:issues: https://github.com/{repository}/issues
+:oomph_setup: https://raw.githubusercontent.com/{repository}/{branch}/{oomph-file}
+:src-folder-url: https://github.com/{repository}/tree/{branch}/{src-folder-name}
+//end::vardef[]
 
-= htmltools-maven-plugin
+//tag::header[]
+= {project-name}
+Maven plugin to do some HTML manipulation tasks (based on JSoup).
+//end::header[]
 
-Maven plugin to work around some of the Asciidoctor limitations, this maven plugin post-process the files in order to publish them.
-
+//tag::description[]
 == Description
+This maven plugin can be used to validate and format HTML files.
+It is usefull to work around some of the Asciidoctor limitations, in order to publish them somewhere.
+//end::description[]
 
-* Ressource delivery (like images and css): they are moved in subfolders and their path in the HTML file is modified.
-** images are moved in a `images/` subfolder.
-** css are moved in a `css/` subfolder.
-* CSS replacement: it is possible to replace some CSS file with other ones.
-* Link to listing and images are replaced (work around for link:{adoc_issue_858}[#858]). Your need these configurations in your asciidoc files:
-** `:figure-caption: Figure` (this is already the default).
-** `:listing-caption: Listing`.
-* Navigation link: Multiple HTML pages are connected together with "Previous", "Next", "Home" links.
-* PDF File are copied to the correct location.
-* The HTML output can be zipped.
+Read more on the link:{homepage}[project home page] (detailed description, usage, code...).
 
-== Usage
-
-Check out the link:examples/[examples].
-
-=== Download
-
-The maven plugin is available in link:{bintray_repo}[my maven repository on Bintray], you can use this in your POM:
-
-[source,xml]
-----
-<pluginRepositories>
-  <pluginRepository>
-    <id>bintray.jmini.maven</id>
-    <url>http://dl.bintray.com/jmini/maven/</url>
-    <releases>
-      <enabled>true</enabled>
-    </releases>
-    <snapshots>
-      <enabled>false</enabled>
-    </snapshots>
-  </pluginRepository>
-</pluginRepositories>
-----
-
-== Code
-
-As for any maven plugin, the source code of the plugin is available in the link:src/[src] folder.
-
-There is an Eclipse Oomph Setup Task to import this project: link:{oomph_setup}[Htmltools.setup]
-
-If you prefer to import the project manually, here is how you can do it:
-
-* Clone or add this repository using the "Git Repositories" view.
-* Start the "Import Projects..." wizard on the "Working Directory" folder and pick the option "Import as general project".
-* Back in the Package Explorer view, select "Configure" > "Convert to Maven Project" on the project.
-
-=== Build
-
-Run maven install on the root pom file:
-
-  mvn install
-
+//tag::contact-section[]
 == Get in touch
 
-Use the link:{issues}[htmltools issue tracker] on GitHub.
+Use the link:{issues}[{project-name} issue tracker] on GitHub.
 
+You can also contact me on Twitter: link:https://twitter.com/{twitter-handle}[@{twitter-handle}]
+//end::contact-section[]
+
+//tag::license-section[]
 == License
 
-link:{license}[Eclipse Public License - v 1.0]
+link:{license}[{license-name}]
+//end::license-section[]
