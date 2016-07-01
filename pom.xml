@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bsiag.htmltools</groupId>
   <artifactId>htmltools-maven-plugin</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <!-- tag::pluginRepositories[] -->
@@ -173,7 +173,7 @@
     <connection>scm:git:https://github.com/jmini/htmltools.git</connection>
     <developerConnection>scm:git:git@github.com:jmini/htmltools.git</developerConnection>
     <url>https://github.com/jmini/htmltools</url>
-    <tag>v1.1.1</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <repository>
