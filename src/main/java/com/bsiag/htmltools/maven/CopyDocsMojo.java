@@ -35,6 +35,7 @@ public class CopyDocsMojo extends AbstractMojo {
   private static final String INPUT_FOLDER = "inputFolder";
   private static final String INPUT_ZIP_URL = "inputZipUrl";
   private static final String INPUT_SUB_FOLDER = "inputSubFolder";
+  private static final String PARTIAL_SYNC = "partialSync";
   private static final String OUTPUT_FOLDER = "outputFolder";
 
   @Parameter(property = INPUT_ZIP_URL)
@@ -45,6 +46,9 @@ public class CopyDocsMojo extends AbstractMojo {
 
   @Parameter(property = INPUT_SUB_FOLDER)
   protected String inputSubFolder;
+
+  @Parameter(property = PARTIAL_SYNC, defaultValue = "false")
+  protected boolean partialSync = false;
 
   @Parameter(property = OUTPUT_FOLDER, defaultValue = "${project.build.directory}/copied-docs")
   protected File outputFolder;
@@ -100,7 +104,7 @@ public class CopyDocsMojo extends AbstractMojo {
 
     //Execute action:
     try {
-      List<FileAction> actions = PublishUtility.computeActions(inputWorkFolder, outputFolder);
+      List<FileAction> actions = PublishUtility.computeActions(inputWorkFolder, outputFolder, !partialSync);
       getLog().info("Found '" + actions.size() + "' actions to perform in: " + outputFolder.getAbsolutePath());
       for (FileAction a : actions) {
         getLog().debug("Action : " + a.toString());
@@ -111,7 +115,7 @@ public class CopyDocsMojo extends AbstractMojo {
         for (FileAction a : parents) {
           FileAction child = a.createActionWithSubFolder("images");
           getLog().info("Sync subfolder 'images': " + child.toString());
-          a.doAction();
+          child.doAction();
         }
       }
     }

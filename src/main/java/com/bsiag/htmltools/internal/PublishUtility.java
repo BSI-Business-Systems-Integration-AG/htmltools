@@ -560,7 +560,7 @@ public class PublishUtility {
     }
   }
 
-  public static List<FileAction> computeActions(File inputRootFolder, File outputRootFolder) throws IOException {
+  public static List<FileAction> computeActions(File inputRootFolder, File outputRootFolder, boolean deleteNonExistingFolders) throws IOException {
     List<FileAction> result = new ArrayList<>();
     List<String> inputHtmlFiles = childHtmlFileNames(inputRootFolder);
     for (String fileName : inputHtmlFiles) {
@@ -588,13 +588,15 @@ public class PublishUtility {
     List<String> inputSubFolderNames = new ArrayList<>();
     for (File f : inputSubFolders) {
       inputSubFolderNames.add(f.getName());
-      result.addAll(computeActions(f, new File(outputRootFolder, f.getName())));
+      result.addAll(computeActions(f, new File(outputRootFolder, f.getName()), deleteNonExistingFolders));
     }
 
-    List<File> outSubFolders = childDirectories(outputRootFolder);
-    for (File outputSubFolder : outSubFolders) {
-      if (!inputSubFolderNames.contains(outputSubFolder.getName())) {
-        result.add(FileAction.remove(outputSubFolder));
+    if (deleteNonExistingFolders) {
+      List<File> outSubFolders = childDirectories(outputRootFolder);
+      for (File outputSubFolder : outSubFolders) {
+        if (!inputSubFolderNames.contains(outputSubFolder.getName())) {
+          result.add(FileAction.remove(outputSubFolder));
+        }
       }
     }
     return result;

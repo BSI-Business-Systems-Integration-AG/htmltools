@@ -105,7 +105,7 @@ public class PublishUtilityTest {
     File input = computeFile("/compute_actions/input_01/");
     File output = computeFile("/compute_actions/output_01/");
 
-    List<FileAction> actions = PublishUtility.computeActions(input, output);
+    List<FileAction> actions = PublishUtility.computeActions(input, output, true);
     assertEquals("actions size", 3, actions.size());
     assertEquals("actions contains a copy task for figure.html", true, actions.contains(createCopyAction(input, output, "figure.html")));
     assertEquals("actions contains a copy task for listing.html", true, actions.contains(createCopyAction(input, output, "listing.html")));
@@ -117,7 +117,7 @@ public class PublishUtilityTest {
     File input = computeFile("/compute_actions/input_01/");
     File output = computeFile("/compute_actions/output_02/");
 
-    List<FileAction> actions = PublishUtility.computeActions(input, output);
+    List<FileAction> actions = PublishUtility.computeActions(input, output, true);
     assertEquals("actions size", 2, actions.size());
     assertEquals("actions contains a copy task for figure.html", false, actions.contains(createCopyAction(input, output, "figure.html")));
     assertEquals("actions contains a copy task for listing.html", true, actions.contains(createCopyAction(input, output, "listing.html")));
@@ -130,7 +130,7 @@ public class PublishUtilityTest {
     File input = computeFile("/compute_actions/input_02/");
     File output = computeFile("/compute_actions/output_01/");
 
-    List<FileAction> actions = PublishUtility.computeActions(input, output);
+    List<FileAction> actions = PublishUtility.computeActions(input, output, true);
     assertEquals("actions size", 2, actions.size());
     assertEquals("actions contains a copy task for file.html", true, actions.contains(createCopyAction(input, output, "file.html")));
     assertEquals("actions contains a copy task for file2.html", true, actions.contains(createCopyAction(new File(input, "sub"), new File(output, "sub"), "file2.html")));
@@ -141,12 +141,20 @@ public class PublishUtilityTest {
     File input = computeFile("/compute_actions/input_01/");
     File output = computeFile("/compute_actions/output_03/");
 
-    List<FileAction> actions = PublishUtility.computeActions(input, output);
+    List<FileAction> actions;
+    actions = PublishUtility.computeActions(input, output, true);
     assertEquals("actions size", 4, actions.size());
     assertEquals("actions contains a copy task for figure.html", true, actions.contains(createCopyAction(input, output, "figure.html")));
     assertEquals("actions contains a copy task for listing.html", true, actions.contains(createCopyAction(input, output, "listing.html")));
     assertEquals("actions contains a copy task for table.html", true, actions.contains(createCopyAction(input, output, "table.html")));
     assertEquals("actions contains a delete task for sub/", true, actions.contains(FileAction.remove(new File(output, "sub"))));
+
+    actions = PublishUtility.computeActions(input, output, false);
+    assertEquals("actions size", 3, actions.size());
+    assertEquals("actions contains a copy task for figure.html", true, actions.contains(createCopyAction(input, output, "figure.html")));
+    assertEquals("actions contains a copy task for listing.html", true, actions.contains(createCopyAction(input, output, "listing.html")));
+    assertEquals("actions contains a copy task for table.html", true, actions.contains(createCopyAction(input, output, "table.html")));
+    assertEquals("actions contains a delete task for sub/", false, actions.contains(FileAction.remove(new File(output, "sub"))));
   }
 
   private FileAction createCopyAction(File inputFolder, File outputFolder, String filename) {
