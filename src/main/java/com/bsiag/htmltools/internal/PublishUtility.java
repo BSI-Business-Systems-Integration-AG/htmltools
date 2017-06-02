@@ -64,6 +64,7 @@ public class PublishUtility {
     final File outFolder = param.getOutFolder();
     final Map<String, File> cssReplacement = param.getCssReplacement();
     final boolean fixXrefLinks = param.isFixXrefLinks();
+    final boolean fixExternalLinks = param.isFixExternalLinks();
 
     if (!inFolder.exists() || !inFolder.isDirectory()) {
       throw new IllegalStateException("Folder inFolder '" + inFolder.getAbsolutePath() + "' not found.");
@@ -95,7 +96,7 @@ public class PublishUtility {
     }
 
     for (File file : files) {
-      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root, fixXrefLinks);
+      publishHtmlFile(inFolder, file, outFolder, cssReplacement, inFiles, root, fixXrefLinks, fixExternalLinks);
     }
   }
 
@@ -113,9 +114,11 @@ public class PublishUtility {
    * @param fixXrefLinks
    *          tells if the cross references links should be fixed as described here
    *          https://github.com/asciidoctor/asciidoctor/issues/858
+   * @param fixExternalLinks
+   *          add taget="_blank" on links starting with http(s):// or ftp://
    * @throws IOException
    */
-  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root, boolean fixXrefLinks) throws IOException {
+  private static void publishHtmlFile(File inFolder, File inFile, File outFolder, Map<String, File> cssReplacement, List<File> pageList, RootItem root, boolean fixXrefLinks, boolean fixExternalLinks) throws IOException {
     File outFile = new File(outFolder, inFile.getName());
     String html = Files.toString(inFile, Charsets.UTF_8);
 
@@ -128,6 +131,10 @@ public class PublishUtility {
       fixListingLink(doc);
       fixFigureLink(doc);
       fixTableLink(doc);
+    }
+
+    if (fixExternalLinks) {
+      fixExternalLinks(doc);
     }
 
     Files.createParentDirs(outFile);
@@ -380,6 +387,16 @@ public class PublishUtility {
       }
     }
     return false;
+  }
+
+  static void fixExternalLinks(Document doc) {
+    Elements elements = doc.getElementsByTag("a");
+    for (Element link : elements) {
+      String href = link.attr("href");
+      if (href != null && (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("ftp://"))) {
+        link.attr("target", "_blank");
+      }
+    }
   }
 
   private static Element findTitleTag(Element element) {

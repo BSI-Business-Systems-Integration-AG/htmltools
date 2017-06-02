@@ -75,6 +75,20 @@ public class PublishUtilityTest {
     assertEquals(expected, result);
   }
 
+  @Test
+  public void testFixExternalLink() throws Exception {
+    String html = "<p>The <a href=\"http://example.com\">Link 1</a>, <a href=\"https://example.com\">Link 2</a> and <a href=\"ftp://example.com\">Link 3</a> are important. <a href=\"page.html\">Link</a> is not</p>.";
+    String expected = "<p>The <a href=\"http://example.com\" target=\"_blank\">Link 1</a>, <a href=\"https://example.com\" target=\"_blank\">Link 2</a> and <a href=\"ftp://example.com\" target=\"_blank\">Link 3</a> are important. <a href=\"page.html\">Link</a> is not</p>.";
+
+    Document doc = Jsoup.parseBodyFragment(html);
+    doc.outputSettings().prettyPrint(false);
+
+    PublishUtility.fixExternalLinks(doc);
+
+    String result = doc.body().html();
+    assertEquals(expected, result);
+  }
+
   private static final List<String> LINES1 = Arrays.asList("Lorem", "Ipsum", "Dolor");
   private static final List<String> LINES2 = Arrays.asList("Lorem", "Ipsum", "Dolor");
   private static final List<String> LINES3 = Arrays.asList("Lorem", "Ipsum");
