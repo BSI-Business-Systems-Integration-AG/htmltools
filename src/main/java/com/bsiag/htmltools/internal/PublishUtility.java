@@ -142,7 +142,8 @@ public class PublishUtility {
 
     moveAndCopyCss(doc, inFolder, outFolder, CSS_SUB_PATH, cssReplacement);
 
-    Files.write(doc.toString(), outFile, Charsets.UTF_8);
+    String content = trimTrailingWhitespaces(doc.toString());
+    Files.write(content, outFile, Charsets.UTF_8);
   }
 
   public static void publishPdfFiles(File inFolder, File outFolder) throws IOException {
@@ -397,6 +398,10 @@ public class PublishUtility {
         link.attr("target", "_blank");
       }
     }
+  }
+
+  static String trimTrailingWhitespaces(String content) {
+    return content.replaceAll("(?m)\\s+$", "");
   }
 
   private static Element findTitleTag(Element element) {

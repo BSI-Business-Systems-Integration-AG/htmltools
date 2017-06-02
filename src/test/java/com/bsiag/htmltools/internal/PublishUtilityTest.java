@@ -89,6 +89,22 @@ public class PublishUtilityTest {
     assertEquals(expected, result);
   }
 
+  @Test
+  public void testTrimTrailingWhitespaces() throws Exception {
+    String content = "<p>Lorem<p>   \n" //
+        + "<div> \n" //
+        + "    <p>Ipsum<p>\t\n" //
+        + "    <p>Dolor<p>\n" //
+        + "</div>    \n";
+    String expected = "<p>Lorem<p>\n" //
+        + "<div>\n" //
+        + "    <p>Ipsum<p>\n" //
+        + "    <p>Dolor<p>\n" //
+        + "</div>";
+    String result = PublishUtility.trimTrailingWhitespaces(content);
+    assertEquals(expected, result);
+  }
+
   private static final List<String> LINES1 = Arrays.asList("Lorem", "Ipsum", "Dolor");
   private static final List<String> LINES2 = Arrays.asList("Lorem", "Ipsum", "Dolor");
   private static final List<String> LINES3 = Arrays.asList("Lorem", "Ipsum");
