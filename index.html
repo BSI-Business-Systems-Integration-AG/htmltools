@@ -751,7 +751,7 @@ It is usefull to work around some of the Asciidoctor limitations, in order to pu
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;plugin&gt;</span>
   <span class="tag">&lt;groupId&gt;</span>com.bsiag.htmltools<span class="tag">&lt;/groupId&gt;</span>
   <span class="tag">&lt;artifactId&gt;</span>htmltools-maven-plugin<span class="tag">&lt;/artifactId&gt;</span>
-  <span class="tag">&lt;version&gt;</span>1.1.2<span class="tag">&lt;/version&gt;</span>
+  <span class="tag">&lt;version&gt;</span>1.1.3-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
   <span class="tag">&lt;executions&gt;</span>
     <span class="tag">&lt;execution&gt;</span>
       <span class="tag">&lt;phase&gt;</span>generate-resources<span class="tag">&lt;/phase&gt;</span>
@@ -765,9 +765,19 @@ It is usefull to work around some of the Asciidoctor limitations, in order to pu
             <span class="tag">&lt;fixXrefLinks&gt;</span>true<span class="tag">&lt;/fixXrefLinks&gt;</span>
             <span class="tag">&lt;fixExternalLinks&gt;</span>true<span class="tag">&lt;/fixExternalLinks&gt;</span>
             <span class="tag">&lt;inputFolder&gt;</span>generated-docs<span class="tag">&lt;/inputFolder&gt;</span>
+            <span class="tag">&lt;outputSubFolder&gt;</span>out<span class="tag">&lt;/outputSubFolder&gt;</span>
             <span class="tag">&lt;htmlOutput&gt;</span>
-              <span class="tag">&lt;outputSubFolder&gt;</span>example-manual<span class="tag">&lt;/outputSubFolder&gt;</span>
               <span class="tag">&lt;outputZipFileName&gt;</span>example-manual.zip<span class="tag">&lt;/outputZipFileName&gt;</span>
+            <span class="tag">&lt;/htmlOutput&gt;</span>
+            <span class="tag">&lt;pdfOutput</span><span class="tag">/&gt;</span>
+          <span class="tag">&lt;/inputSource&gt;</span>
+          <span class="tag">&lt;inputSource&gt;</span>
+            <span class="tag">&lt;fixXrefLinks&gt;</span>false<span class="tag">&lt;/fixXrefLinks&gt;</span>
+            <span class="tag">&lt;fixExternalLinks&gt;</span>false<span class="tag">&lt;/fixExternalLinks&gt;</span>
+            <span class="tag">&lt;inputFolder&gt;</span>generated-docs2<span class="tag">&lt;/inputFolder&gt;</span>
+            <span class="tag">&lt;outputSubFolder&gt;</span>out<span class="tag">&lt;/outputSubFolder&gt;</span>
+            <span class="tag">&lt;htmlOutput&gt;</span>
+              <span class="tag">&lt;outputZipFileName&gt;</span>simple-manual.zip<span class="tag">&lt;/outputZipFileName&gt;</span>
             <span class="tag">&lt;/htmlOutput&gt;</span>
             <span class="tag">&lt;pdfOutput</span><span class="tag">/&gt;</span>
           <span class="tag">&lt;/inputSource&gt;</span>
@@ -879,7 +889,7 @@ The copy operation is only triggered if there are differences in the content.</p
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-09-17 13:25:37 +02:00
+Last updated 2017-09-17 13:34:37 +02:00
 </div>
 </div>
 </body>
