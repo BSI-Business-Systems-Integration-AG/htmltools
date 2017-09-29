@@ -1,0 +1,25 @@
+= Simple Manual
+Doc Writer <doc.writer@example.org>
+2014-09-09
+:revnumber: {project-version}
+:example-caption!:
+:listing-caption: Listing
+ifndef::imagesdir[:imagesdir: ../../]
+
+This is a user manual for an example project.
+
+== Introduction
+
+This project does something.
+We just haven't decided what that is yet.
+
+This page was built by the following command:
+
+ $ mvn
+
+== Images
+
+[[fig-sunset, Sunset Figure]]
+.Sunset image 2
+image::../shared_img/sunset2.jpg[scaledwidth=75%]
+
