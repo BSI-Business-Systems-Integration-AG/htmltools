@@ -120,15 +120,25 @@ public class HtmltoolsMojo extends AbstractMojo {
           param.setOutFolder(htmlOutputFolder);
           param.setCssReplacement(cssReplacementMap);
           param.setFixXrefLinks(inputSource.getFixXrefLinks() == null ? true : inputSource.getFixXrefLinks().booleanValue());
-          param.setFixExternalLinks(inputSource.getFixExternalLinks());
+          param.setFixExternalLinks(inputSource.getFixExternalLinks() == null ? false : inputSource.getFixExternalLinks().booleanValue());
           PublishUtility.publishHtmlFiles(param);
           getLog().info("HTML InputSource <" + inputSource.getInputFolder().getAbsolutePath() + "> to " + htmlOutputFolder.getAbsolutePath());
 
           String outputZipFileName = htmlOutput.getOutputZipFileName();
           if (outputZipFileName != null && outputZipFileName.length() > 0) {
-            File destZipFile = new File(htmlOutputFolder.getParentFile(), outputZipFileName);
-            ZipUtility.zipFolder(htmlOutputFolder, destZipFile);
-            getLog().info("Folder <" + htmlOutputFolder.getAbsolutePath() + "> zipped as " + destZipFile.getAbsolutePath());
+            File tempOutputFolder = new File(Files.createTempDir(), Files.getNameWithoutExtension(outputZipFileName));
+            ParamPublishHtmlFiles param2 = new ParamPublishHtmlFiles();
+            param2.setInFolder(inputSource.getInputFolder());
+            param2.setInFiles(pageListMap.get(htmlOutput));
+            param2.setOutFolder(tempOutputFolder);
+            param2.setCssReplacement(cssReplacementMap);
+            param2.setFixXrefLinks(inputSource.getFixXrefLinks() == null ? true : inputSource.getFixXrefLinks().booleanValue());
+            param2.setFixExternalLinks(inputSource.getFixExternalLinks() == null ? true : inputSource.getFixExternalLinks().booleanValue());
+            PublishUtility.publishHtmlFiles(param2);
+
+            File destZipFile = new File(htmlOutputFolder, outputZipFileName);
+            ZipUtility.zipFolder(tempOutputFolder, destZipFile);
+            getLog().info("Folder <" + tempOutputFolder.getAbsolutePath() + "> zipped as " + destZipFile.getAbsolutePath());
           }
         }
         catch (IOException e) {
