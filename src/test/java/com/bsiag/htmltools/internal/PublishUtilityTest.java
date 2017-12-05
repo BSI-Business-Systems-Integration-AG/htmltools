@@ -31,6 +31,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
 public class PublishUtilityTest {
 
   @Test
@@ -250,5 +253,59 @@ public class PublishUtilityTest {
     URL url = PublishUtilityTest.class.getResource(file);
     Path resPath = Paths.get(url.toURI());
     return new String(java.nio.file.Files.readAllBytes(resPath), "UTF8");
+  }
+
+  @Test
+  public void testPublishHtmlFiles() throws Exception {
+    ParamPublishHtmlFiles param = new ParamPublishHtmlFiles();
+    param.setInFolder(new File("src/test/resources/pages"));
+    param.setInFiles(Arrays.asList(new File("src/test/resources/pages/example1.html"), new File("src/test/resources/pages/example2.html")));
+    param.setFixExternalLinks(false);
+    param.setFixXrefLinks(false);
+    File outFolder = Files.createTempDir();
+    param.setOutFolder(outFolder);
+    PublishUtility.publishHtmlFiles(param);
+
+    File expectedFile1 = new File(outFolder, "example1.html");
+    assertTrue("File '" + expectedFile1.getAbsolutePath() + "' exists", expectedFile1.exists());
+    String content1 = Files.toString(expectedFile1, Charsets.UTF_8);
+    assertTrue("File '" + expectedFile1.getAbsolutePath() + "' contains link to example2", content1.contains("<a href=\"example2.html\" "));
+
+    File expectedFile2 = new File(outFolder, "example2.html");
+    assertTrue("File '" + expectedFile2.getAbsolutePath() + "' exists", expectedFile2.exists());
+    String content2 = Files.toString(expectedFile2, Charsets.UTF_8);
+    assertTrue("File '" + expectedFile1.getAbsolutePath() + "' contains link to example1", content2.contains("<a href=\"example1.html\" "));
+
+    File expectedNavFile1 = new File(new File(outFolder, "images"), "home.gif");
+    assertTrue("File '" + expectedNavFile1.getAbsolutePath() + "' exists", expectedNavFile1.exists());
+    File expectedNavFile2 = new File(new File(outFolder, "images"), "next.gif");
+    assertTrue("File '" + expectedNavFile2.getAbsolutePath() + "' exists", expectedNavFile2.exists());
+    File expectedNavFile3 = new File(new File(outFolder, "images"), "prev.gif");
+    assertTrue("File '" + expectedNavFile3.getAbsolutePath() + "' exists", expectedNavFile3.exists());
+  }
+
+  @Test
+  public void testPublishHtmlFilesUniquePage() throws Exception {
+    File inputFile = new File("src/test/resources/pages/example1.html");
+    File outFolder = Files.createTempDir();
+
+    ParamPublishHtmlFiles param = new ParamPublishHtmlFiles();
+    param.setInFolder(inputFile.getParentFile());
+    param.setInFiles(Collections.singletonList(inputFile));
+    param.setFixExternalLinks(false);
+    param.setFixXrefLinks(false);
+    param.setOutFolder(outFolder);
+    PublishUtility.publishHtmlFiles(param);
+
+    File acutalFile = new File(outFolder, "example1.html");
+    assertTrue("File '" + acutalFile.getAbsolutePath() + "' exists", acutalFile.exists());
+
+    String expectedContent = normalizeLineEnds(Files.toString(inputFile, Charsets.UTF_8));
+    String actualContent = normalizeLineEnds(Files.toString(acutalFile, Charsets.UTF_8));
+    assertEquals(expectedContent, actualContent);
+  }
+
+  private static String normalizeLineEnds(String s) {
+    return s.replace("\r\n", "\n").replace('\r', '\n');
   }
 }

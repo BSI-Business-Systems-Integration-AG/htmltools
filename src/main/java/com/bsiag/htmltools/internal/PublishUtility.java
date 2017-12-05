@@ -125,7 +125,9 @@ public class PublishUtility {
     Document doc = Jsoup.parse(html);
     doc.outputSettings().charset("ASCII");
 
-    fixNavigation(doc, inFile, pageList, root);
+    if (pageList != null && pageList.size() > 1) {
+      fixNavigation(doc, inFile, pageList, root);
+    }
 
     if (fixXrefLinks) {
       fixListingLink(doc);
